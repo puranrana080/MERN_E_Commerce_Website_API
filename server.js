@@ -1,7 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./Routes/user.js";
-import productRouter from "./Routes/product.js"
+import productRouter from "./Routes/product.js";
+import cartRouter from "./Routes/cart.js";
 import dotenv from "dotenv";
 
 const app = express();
@@ -17,7 +18,10 @@ app.get("/", (req, res) => res.json({ message: "This is home route" }));
 app.use("/api/user", userRouter);
 
 //product Router
-app.use('/api/product',productRouter)
+app.use("/api/product", productRouter);
+
+//cart Router
+app.use("/api/cart", cartRouter);
 
 mongoose
   .connect(process.env.MONGODB_URL, { dbName: "E_Commerce_Website" })
