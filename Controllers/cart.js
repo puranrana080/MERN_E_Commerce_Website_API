@@ -32,7 +32,11 @@ export const userCart = async (req, res) => {
   const userId = req.user;
   try {
     let cart = await Cart.findOne({ userId });
-    if (!cart) return res.json({ message: "Cart Not found", success: false });
+    if (!cart) {
+      cart = new Cart({ userId, items: [] });
+      // return res.json({ message: "Cart Not found", success: false });
+    }
+
     res.json({ message: "User Cart", cart });
   } catch (error) {
     res.json(error.message);
