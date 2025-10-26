@@ -27,16 +27,16 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     let user = await User.findOne({ email });
-    if (!user) return res.json({ message: "User Not Found", success: false });
+    if (!user) return res.status(401).json({ message: "User Not Found", success: false });
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)
-      return res.json({ message: "Invalid Credential", success: false });
+      return res.status(401).json({ message: "Invalid Credential", success: false });
     const token = jwt.sign({ userId: user._id }, process.env.JWT_TOKEN, {
       expiresIn: "10d",
     });
-    res.json({ message: `Welcome ${user.name}`, token, success: true });
+    res.status(200).json({ message: `Welcome ${user.name}`, token, success: true });
   } catch (error) {
-    res.json({ message: error.message });
+    res.status(401).json({ message: error.message });
   }
 };
 
